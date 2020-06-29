@@ -1,0 +1,76 @@
+
+$str = highlight_string('
+<?php
+function palindromo($palabra)
+{
+    $revpalabra =  $palabra;
+    $newpalabra =  $palabra;
+
+    $search = explode(",", "ç,æ,œ,á,é,í,ó,ú,à,è,ì,ò,ù,ä,ë,ï,ö,ü,ÿ,â,ê,î,ô,û,å,e,i,ø,u");
+    $replace = explode(",", "c,ae,oe,a,e,i,o,u,a,e,i,o,u,a,e,i,o,u,y,a,e,i,o,u,a,e,i,o,u");
+
+    $revpalabra = str_replace($search, $replace, $revpalabra);
+    $newpalabra = str_replace($search, $replace, $newpalabra);
+
+    $revpalabra = str_replace(" ", "", $revpalabra);
+    $revpalabra = strrev($revpalabra);
+    $revpalabra = strtolower($revpalabra);
+
+    $newpalabra = str_replace(" ", "", $newpalabra);
+    $newpalabra = strtolower($newpalabra);
+
+    if ($palabra == "") {
+        echo $palabra . "String vacío, intenta de nuevo";
+        return;
+    }
+    if (strcmp($newpalabra, $revpalabra) != 0) {
+        echo $palabra . " no es un palíndromo ";
+        return;
+    }
+    echo $palabra . " es un palíndromo";
+}
+
+?>', true);
+echo $str;
+
+capicua(123456);
+
+<p>Esta función toma una palabra, retira los espacios, la convierte a minúsculas para inmediatamente después
+    proceder a comparar la versión normal con su reverse.</p>
+
+<!-- <form id = "myform" action="./controller.php"> -->
+<!-- <form id="myForm"> -->
+<label for="fname">Palabra:</label>
+<input type="text" id="palabra" name="palabra"><br><br>
+<button id="boton" onclick="palindromo();">Ejecutar</button>
+<!-- </form> -->
+
+<div id="respuesta"></div>
+
+<script>
+    var input = document.getElementById("palabra");
+    input.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            palindromo();
+        }
+    });
+</script>
+
+<script>
+    function palindromo() {
+        var str = document.getElementById("palabra").value;
+
+        var xmlhttp = new XMLHttpRequest();
+
+        xmlhttp.onreadystatechange = function() {
+            document.getElementById("respuesta").innerHTML = xmlhttp.readyState;
+            if (xmlhttp.readyState == 4) {
+                var s = document.getElementById("respuesta");
+                s.innerHTML = xmlhttp.responseText;
+            }
+        }
+        xmlhttp.open("GET", "controller.php?palabra=" + str, true);
+        xmlhttp.send();
+    }
+</script>
